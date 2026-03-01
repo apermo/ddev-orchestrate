@@ -28,8 +28,19 @@ This runs all orchestration fragments in order:
 
 1. **Download WordPress** — Downloads WP core via WP-CLI
 2. **Create wp-config.php** — Generates config with DDEV database credentials
-3. **Install WordPress** — Runs `wp core install`
-4. **Activate project** — Activates plugin or theme based on mode
+3. **Install WordPress** — Runs `wp core install` (or `multisite-install`)
+4. **Configure multisite** — Writes multisite constants to wp-config.php (if enabled)
+5. **Activate project** — Activates plugin or theme based on mode (network-aware)
+
+### Reset
+
+To switch between single-site and multisite (or do a clean reinstall):
+
+```bash
+ddev orchestrate --reset
+```
+
+This drops the database, removes wp-config.php, and reruns all fragments from scratch.
 
 ### WP-CLI wrapper
 
@@ -61,6 +72,8 @@ PROJECT_MODE=plugin
 | `WP_ADMIN_PASSWORD` | `admin` | Admin password |
 | `WP_ADMIN_EMAIL` | `admin@example.com` | Admin email |
 | `PROJECT_MODE` | `plugin` | `plugin` or `theme` |
+| `WP_MULTISITE` | `0` | Set to `1` for multisite installation |
+| `WP_MULTISITE_SUBDOMAIN` | `0` | Set to `1` for subdomain multisite |
 
 ## License
 
