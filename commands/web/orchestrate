@@ -28,6 +28,7 @@ export WP_ADMIN_EMAIL="${WP_ADMIN_EMAIL:-admin@example.com}"
 export PROJECT_MODE="${PROJECT_MODE:-plugin}"
 export WP_MULTISITE="${WP_MULTISITE:-0}"
 export WP_MULTISITE_SUBDOMAIN="${WP_MULTISITE_SUBDOMAIN:-0}"
+export WP_DB_IMPORT="${WP_DB_IMPORT:-}"
 export DOCROOT="/var/www/html"
 export WP_PATH="${DOCROOT}"
 

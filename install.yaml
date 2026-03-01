@@ -6,6 +6,7 @@ project_files:
     - commands/web/wp
     - orchestrate/fragments/00-download-wordpress.sh
     - orchestrate/fragments/10-create-wp-config.sh
+    - orchestrate/fragments/15-import-database.sh
     - orchestrate/fragments/20-install-wordpress.sh
     - orchestrate/fragments/25-configure-multisite.sh
     - orchestrate/fragments/30-activate-project.sh

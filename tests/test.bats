@@ -20,6 +20,7 @@ setup() {
 @test "all fragments exist and are executable" {
     [ -x "$DIR/orchestrate/fragments/00-download-wordpress.sh" ]
     [ -x "$DIR/orchestrate/fragments/10-create-wp-config.sh" ]
+    [ -x "$DIR/orchestrate/fragments/15-import-database.sh" ]
     [ -x "$DIR/orchestrate/fragments/20-install-wordpress.sh" ]
     [ -x "$DIR/orchestrate/fragments/25-configure-multisite.sh" ]
     [ -x "$DIR/orchestrate/fragments/30-activate-project.sh" ]
@@ -39,9 +40,10 @@ setup() {
 @test "fragments are numbered sequentially" {
     ls "$DIR/orchestrate/fragments/" | head -1 | grep -q "^00-"
     ls "$DIR/orchestrate/fragments/" | sed -n '2p' | grep -q "^10-"
-    ls "$DIR/orchestrate/fragments/" | sed -n '3p' | grep -q "^20-"
-    ls "$DIR/orchestrate/fragments/" | sed -n '4p' | grep -q "^25-"
-    ls "$DIR/orchestrate/fragments/" | sed -n '5p' | grep -q "^30-"
+    ls "$DIR/orchestrate/fragments/" | sed -n '3p' | grep -q "^15-"
+    ls "$DIR/orchestrate/fragments/" | sed -n '4p' | grep -q "^20-"
+    ls "$DIR/orchestrate/fragments/" | sed -n '5p' | grep -q "^25-"
+    ls "$DIR/orchestrate/fragments/" | sed -n '6p' | grep -q "^30-"
 }
 
 @test "install.yaml lists all fragments" {
@@ -50,4 +52,24 @@ setup() {
 
 @test "orchestrate command supports --reset flag" {
     grep -q "\-\-reset" "$DIR/commands/web/orchestrate"
+}
+
+@test "install.yaml lists import-database fragment" {
+    grep -q "15-import-database.sh" "$DIR/install.yaml"
+}
+
+@test "import-database fragment checks WP_DB_IMPORT" {
+    grep -q "WP_DB_IMPORT" "$DIR/orchestrate/fragments/15-import-database.sh"
+}
+
+@test "install fragment skips when database was imported" {
+    grep -q "WP_DB_IMPORTED" "$DIR/orchestrate/fragments/20-install-wordpress.sh"
+}
+
+@test "multisite fragment skips when database was imported" {
+    grep -q "WP_DB_IMPORTED" "$DIR/orchestrate/fragments/25-configure-multisite.sh"
+}
+
+@test "orchestrate command sets WP_DB_IMPORT default" {
+    grep -q "WP_DB_IMPORT" "$DIR/commands/web/orchestrate"
 }
