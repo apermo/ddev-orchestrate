@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+## Description: Orchestrate a full WordPress environment
+## Usage: orchestrate
+## Example: ddev orchestrate
+
+set -euo pipefail
+
+ORCHESTRATE_DIR="/var/www/html/.ddev/orchestrate"
+FRAGMENTS_DIR="${ORCHESTRATE_DIR}/fragments"
+
+# Load environment from .ddev/.env if present
+ENV_FILE="/var/www/html/.ddev/.env"
+if [ -f "$ENV_FILE" ]; then
+    set -a
+    # shellcheck source=/dev/null
+    source "$ENV_FILE"
+    set +a
+fi
+
+# Defaults
+export WP_VERSION="${WP_VERSION:-latest}"
+export WP_LOCALE="${WP_LOCALE:-en_US}"
+export WP_ADMIN_USER="${WP_ADMIN_USER:-admin}"
+export WP_ADMIN_PASSWORD="${WP_ADMIN_PASSWORD:-admin}"
+export WP_ADMIN_EMAIL="${WP_ADMIN_EMAIL:-admin@example.com}"
+export PROJECT_MODE="${PROJECT_MODE:-plugin}"
+export DOCROOT="/var/www/html"
+export WP_PATH="${DOCROOT}"
+
+echo "=== DDEV Orchestrate ==="
+echo "WordPress: ${WP_VERSION}"
+echo "Locale: ${WP_LOCALE}"
+echo "Mode: ${PROJECT_MODE}"
+echo ""
+
+# Run fragments in order
+for fragment in "${FRAGMENTS_DIR}"/*.sh; do
+    if [ -f "$fragment" ]; then
+        echo "--- Running $(basename "$fragment") ---"
+        # shellcheck source=/dev/null
+        source "$fragment"
+        echo ""
+    fi
+done
+
+echo "=== Orchestration complete ==="
