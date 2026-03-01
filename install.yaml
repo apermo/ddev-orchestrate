@@ -1,0 +1,16 @@
+name: ddev-orchestrate
+ddev_version_constraint: '>= v1.24.0'
+
+project_files:
+    - commands/web/orchestrate
+    - commands/web/wp
+    - orchestrate/fragments/00-download-wordpress.sh
+    - orchestrate/fragments/10-create-wp-config.sh
+    - orchestrate/fragments/20-install-wordpress.sh
+    - orchestrate/fragments/30-activate-project.sh
+    - orchestrate/templates/wp-config.php.tpl
+
+post_install_actions:
+    - chmod +x commands/web/orchestrate
+    - chmod +x commands/web/wp
+    - chmod +x orchestrate/fragments/*.sh

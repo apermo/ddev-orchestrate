@@ -9,4 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial project setup
+- `ddev orchestrate` command for full WordPress setup
+- `ddev wp` WP-CLI wrapper for `php` project types
+- Fragment-based orchestration (download, config, install, activate)
+- wp-config.php template with DDEV database credentials
+- BATS test suite
