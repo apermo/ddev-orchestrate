@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 ## Description: Orchestrate a full WordPress environment
-## Usage: orchestrate
+## Usage: orchestrate [--reset]
 ## Example: ddev orchestrate
+## Example: ddev orchestrate --reset
 
 set -euo pipefail
 
@@ -25,13 +26,32 @@ export WP_ADMIN_USER="${WP_ADMIN_USER:-admin}"
 export WP_ADMIN_PASSWORD="${WP_ADMIN_PASSWORD:-admin}"
 export WP_ADMIN_EMAIL="${WP_ADMIN_EMAIL:-admin@example.com}"
 export PROJECT_MODE="${PROJECT_MODE:-plugin}"
+export WP_MULTISITE="${WP_MULTISITE:-0}"
+export WP_MULTISITE_SUBDOMAIN="${WP_MULTISITE_SUBDOMAIN:-0}"
 export DOCROOT="/var/www/html"
 export WP_PATH="${DOCROOT}"
+
+# Handle --reset flag
+if [[ "${1:-}" == "--reset" ]]; then
+    echo "Resetting WordPress..."
+    wp db reset --yes --path="${WP_PATH}" 2>/dev/null || true
+    rm -f "${WP_PATH}/wp-config.php"
+fi
+
+MULTISITE_LABEL="no"
+if [ "${WP_MULTISITE}" = "1" ]; then
+    if [ "${WP_MULTISITE_SUBDOMAIN}" = "1" ]; then
+        MULTISITE_LABEL="yes (subdomain)"
+    else
+        MULTISITE_LABEL="yes (subdirectory)"
+    fi
+fi
 
 echo "=== DDEV Orchestrate ==="
 echo "WordPress: ${WP_VERSION}"
 echo "Locale: ${WP_LOCALE}"
 echo "Mode: ${PROJECT_MODE}"
+echo "Multisite: ${MULTISITE_LABEL}"
 echo ""
 
 # Run fragments in order
