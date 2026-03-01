@@ -18,6 +18,7 @@ orchestrate/
     00-download-wordpress.sh    # Download WP core
     10-create-wp-config.sh      # Generate wp-config.php
     20-install-wordpress.sh     # Run wp core install (single or multisite)
+    15-import-database.sh       # Import SQL dump (if WP_DB_IMPORT is set)
     25-configure-multisite.sh   # Write multisite constants to wp-config.php
     30-activate-project.sh      # Activate plugin/theme (network-aware)
   templates/
@@ -46,6 +47,7 @@ All fragments are safe to re-run. They check for existing state before acting (e
 |----------|---------|-------------|
 | `WP_MULTISITE` | `0` | Set to `1` for multisite installation |
 | `WP_MULTISITE_SUBDOMAIN` | `0` | Set to `1` for subdomain multisite (vs subdirectory) |
+| `WP_DB_IMPORT` | _(empty)_ | Path to SQL dump to import instead of fresh install |
 
 ## Conventions
 

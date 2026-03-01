@@ -18,3 +18,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `25-configure-multisite.sh` fragment for wp-config.php constants
 - Network activation for plugins and themes in multisite mode
 - BATS test suite
+- Database import via `WP_DB_IMPORT` env var with automatic URL replacement

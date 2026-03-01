@@ -2,6 +2,11 @@
 
 # Run WordPress core installation if not already installed.
 
+if [ "${WP_DB_IMPORTED:-0}" = "1" ]; then
+    echo "Database was imported, skipping install."
+    return 0
+fi
+
 if wp core is-installed --path="${WP_PATH}" 2>/dev/null; then
     echo "WordPress already installed."
     return 0

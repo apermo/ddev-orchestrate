@@ -28,9 +28,23 @@ This runs all orchestration fragments in order:
 
 1. **Download WordPress** — Downloads WP core via WP-CLI
 2. **Create wp-config.php** — Generates config with DDEV database credentials
-3. **Install WordPress** — Runs `wp core install` (or `multisite-install`)
-4. **Configure multisite** — Writes multisite constants to wp-config.php (if enabled)
-5. **Activate project** — Activates plugin or theme based on mode (network-aware)
+3. **Import database** — Imports a SQL dump if `WP_DB_IMPORT` is set (skips steps 4–5)
+4. **Install WordPress** — Runs `wp core install` (or `multisite-install`)
+5. **Configure multisite** — Writes multisite constants to wp-config.php (if enabled)
+6. **Activate project** — Activates plugin or theme based on mode (network-aware)
+
+### Database import
+
+To import an existing database dump instead of a fresh install:
+
+```env
+# .ddev/.env
+WP_DB_IMPORT=.ddev/db-dump.sql
+```
+
+Supports `.sql` and `.sql.gz` files. The path is relative to the project root. After import, the site URL is automatically replaced with the DDEV site URL via `wp search-replace`.
+
+When `WP_DB_IMPORT` is set, the install and multisite-configure fragments are skipped.
 
 ### Reset
 
@@ -74,6 +88,7 @@ PROJECT_MODE=plugin
 | `PROJECT_MODE` | `plugin` | `plugin` or `theme` |
 | `WP_MULTISITE` | `0` | Set to `1` for multisite installation |
 | `WP_MULTISITE_SUBDOMAIN` | `0` | Set to `1` for subdomain multisite |
+| `WP_DB_IMPORT` | _(empty)_ | Path to SQL dump to import (relative to project root) |
 
 ## License
 

@@ -4,6 +4,11 @@
 # wp core multisite-install creates network tables but does NOT write
 # the required constants to wp-config.php — this fragment automates that.
 
+if [ "${WP_DB_IMPORTED:-0}" = "1" ]; then
+    echo "Database was imported, skipping multisite configuration."
+    return 0
+fi
+
 if [ "${WP_MULTISITE}" != "1" ]; then
     return 0
 fi
