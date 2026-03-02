@@ -90,6 +90,10 @@ PROJECT_MODE=plugin
 | `WP_MULTISITE_SUBDOMAIN` | `0` | Set to `1` for subdomain multisite |
 | `WP_DB_IMPORT` | _(empty)_ | Path to SQL dump to import (relative to project root) |
 
+## Credits
+
+The orchestrate pattern — a fragment-based DDEV command that bootstraps a full WordPress environment — was originally created by [Moritz Meißelbach (@Biont)](https://github.com/Biont) at [Inpsyde (Syde GmbH)](https://github.com/inpsyde) for their [WP-Stash](https://github.com/inpsyde/WP-Stash) project. This addon is a clean-room reimplementation of that approach.
+
 ## License
 
 GPL-2.0-or-later — see [LICENSE](LICENSE) for details.
