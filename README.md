@@ -92,7 +92,7 @@ PROJECT_MODE=plugin
 
 ## Credits
 
-The orchestrate pattern — a fragment-based DDEV command that bootstraps a full WordPress environment — was originally created by [Moritz Meißelbach (@Biont)](https://github.com/Biont) at [Inpsyde (Syde GmbH)](https://github.com/inpsyde) for their [WP-Stash](https://github.com/inpsyde/WP-Stash) project. This addon is a clean-room reimplementation of that approach.
+The orchestrate pattern — a fragment-based DDEV command that bootstraps a full WordPress environment — was originally created by [Moritz Meißelbach (@Biont)](https://github.com/Biont) at [Inpsyde (Syde GmbH)](https://github.com/inpsyde) for their [WP-Stash](https://github.com/inpsyde/WP-Stash) project.
 
 ## License
 
