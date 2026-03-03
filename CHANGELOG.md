@@ -19,3 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Network activation for plugins and themes in multisite mode
 - BATS test suite
 - Database import via `WP_DB_IMPORT` env var with automatic URL replacement
+- Credits for original orchestrate pattern by [@Biont](https://github.com/Biont) at [Inpsyde](https://github.com/inpsyde)
+
+### Fixed
+
+- Caller workflow permissions for reusable workflows
+
+### Changed
+
+- License from MIT to GPL-2.0-or-later
