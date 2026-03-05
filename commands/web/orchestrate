@@ -30,7 +30,11 @@ export WP_MULTISITE="${WP_MULTISITE:-0}"
 export WP_MULTISITE_SUBDOMAIN="${WP_MULTISITE_SUBDOMAIN:-0}"
 export WP_DB_IMPORT="${WP_DB_IMPORT:-}"
 export DOCROOT="/var/www/html"
-export WP_PATH="${DOCROOT}"
+if [ -n "${DDEV_DOCROOT:-}" ] && [ "${DDEV_DOCROOT}" != "." ]; then
+    export WP_PATH="${DOCROOT}/${DDEV_DOCROOT}"
+else
+    export WP_PATH="${DOCROOT}"
+fi
 
 # Handle --reset flag
 if [[ "${1:-}" == "--reset" ]]; then

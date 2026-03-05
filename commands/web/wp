@@ -7,5 +7,10 @@
 set -euo pipefail
 
 DOCROOT="/var/www/html"
+if [ -n "${DDEV_DOCROOT:-}" ] && [ "${DDEV_DOCROOT}" != "." ]; then
+    WP_PATH="${DOCROOT}/${DDEV_DOCROOT}"
+else
+    WP_PATH="${DOCROOT}"
+fi
 
-wp --path="${DOCROOT}" "$@"
+wp --path="${WP_PATH}" "$@"
