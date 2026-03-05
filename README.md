@@ -9,6 +9,7 @@ DDEV addon for WordPress project orchestration. Downloads WordPress, creates con
 
 - [DDEV](https://ddev.readthedocs.io/) >= 1.24.0
 - Project type: `php` (not `wordpress`)
+- Docroot pointing to a subdirectory (e.g., `.ddev/wordpress`)
 
 ## Installation
 
@@ -16,6 +17,16 @@ DDEV addon for WordPress project orchestration. Downloads WordPress, creates con
 ddev add-on get apermo/ddev-orchestrate
 ddev restart
 ```
+
+Your `.ddev/config.yaml` should look like:
+
+```yaml
+name: my-plugin
+type: php
+docroot: .ddev/wordpress
+```
+
+WordPress will be downloaded into the docroot directory. The project root is symlinked into `wp-content/plugins/` (or `wp-content/themes/` for theme mode) automatically.
 
 ## Usage
 
@@ -26,12 +37,14 @@ ddev orchestrate
 
 This runs all orchestration fragments in order:
 
-1. **Download WordPress** — Downloads WP core via WP-CLI
+1. **Download WordPress** — Downloads WP core into the docroot
 2. **Create wp-config.php** — Generates config with DDEV database credentials
-3. **Import database** — Imports a SQL dump if `WP_DB_IMPORT` is set (skips steps 4–5)
+3. **Import database** — Imports a SQL dump if `WP_DB_IMPORT` is set (skips 4–5)
 4. **Install WordPress** — Runs `wp core install` (or `multisite-install`)
-5. **Configure multisite** — Writes multisite constants to wp-config.php (if enabled)
-6. **Activate project** — Activates plugin or theme based on mode (network-aware)
+5. **Configure multisite** — Writes multisite constants (if enabled)
+6. **Composer install** — Runs `composer install` if `composer.json` exists
+7. **Link project** — Symlinks project into `wp-content/plugins/` or `themes/`
+8. **Activate project** — Activates plugin or theme (network-aware)
 
 ### Database import
 
