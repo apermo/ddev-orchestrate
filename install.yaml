@@ -9,6 +9,8 @@ project_files:
     - orchestrate/fragments/15-import-database.sh
     - orchestrate/fragments/20-install-wordpress.sh
     - orchestrate/fragments/25-configure-multisite.sh
+    - orchestrate/fragments/26-composer-install.sh
+    - orchestrate/fragments/27-link-project.sh
     - orchestrate/fragments/30-activate-project.sh
     - orchestrate/templates/wp-config.php.tpl
 
