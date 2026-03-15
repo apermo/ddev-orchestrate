@@ -9,6 +9,7 @@ set -euo pipefail
 
 ORCHESTRATE_DIR="/var/www/html/.ddev/orchestrate"
 FRAGMENTS_DIR="${ORCHESTRATE_DIR}/fragments"
+PROJECT_FRAGMENTS_DIR="${ORCHESTRATE_DIR}/project"
 
 # Load environment from .ddev/.env if present
 ENV_FILE="/var/www/html/.ddev/.env"
@@ -29,6 +30,7 @@ export PROJECT_MODE="${PROJECT_MODE:-plugin}"
 export WP_MULTISITE="${WP_MULTISITE:-0}"
 export WP_MULTISITE_SUBDOMAIN="${WP_MULTISITE_SUBDOMAIN:-0}"
 export WP_DB_IMPORT="${WP_DB_IMPORT:-}"
+export ORCHESTRATE_SKIP="${ORCHESTRATE_SKIP:-}"
 export DOCROOT="/var/www/html"
 if [ -n "${DDEV_DOCROOT:-}" ] && [ "${DDEV_DOCROOT}" != "." ]; then
     export WP_PATH="${DOCROOT}/${DDEV_DOCROOT}"
@@ -59,14 +61,48 @@ echo "Mode: ${PROJECT_MODE}"
 echo "Multisite: ${MULTISITE_LABEL}"
 echo ""
 
-# Run fragments in order
+# Check if a fragment should be skipped via ORCHESTRATE_SKIP
+should_skip() {
+    local name="$1"
+    if [ -z "$ORCHESTRATE_SKIP" ]; then
+        return 1
+    fi
+    IFS=',' read -ra SKIP_LIST <<< "$ORCHESTRATE_SKIP"
+    for skip in "${SKIP_LIST[@]}"; do
+        skip="$(echo "$skip" | xargs)"
+        if [ "$skip" = "$name" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Run addon fragments in order
 for fragment in "${FRAGMENTS_DIR}"/*.sh; do
     if [ -f "$fragment" ]; then
-        echo "--- Running $(basename "$fragment") ---"
+        name="$(basename "$fragment")"
+        if should_skip "$name"; then
+            echo "--- Skipping $name (ORCHESTRATE_SKIP) ---"
+            echo ""
+            continue
+        fi
+        echo "--- Running $name ---"
         # shellcheck source=/dev/null
         source "$fragment"
         echo ""
     fi
 done
+
+# Run project fragments in order
+if [ -d "$PROJECT_FRAGMENTS_DIR" ]; then
+    for fragment in "${PROJECT_FRAGMENTS_DIR}"/*.sh; do
+        if [ -f "$fragment" ]; then
+            echo "--- Running $(basename "$fragment") (project) ---"
+            # shellcheck source=/dev/null
+            source "$fragment"
+            echo ""
+        fi
+    done
+fi
 
 echo "=== Orchestration complete ==="

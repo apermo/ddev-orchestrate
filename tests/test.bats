@@ -23,6 +23,8 @@ setup() {
     [ -x "$DIR/orchestrate/fragments/15-import-database.sh" ]
     [ -x "$DIR/orchestrate/fragments/20-install-wordpress.sh" ]
     [ -x "$DIR/orchestrate/fragments/25-configure-multisite.sh" ]
+    [ -x "$DIR/orchestrate/fragments/26-composer-install.sh" ]
+    [ -x "$DIR/orchestrate/fragments/27-link-project.sh" ]
     [ -x "$DIR/orchestrate/fragments/30-activate-project.sh" ]
 }
 
@@ -43,7 +45,9 @@ setup() {
     ls "$DIR/orchestrate/fragments/" | sed -n '3p' | grep -q "^15-"
     ls "$DIR/orchestrate/fragments/" | sed -n '4p' | grep -q "^20-"
     ls "$DIR/orchestrate/fragments/" | sed -n '5p' | grep -q "^25-"
-    ls "$DIR/orchestrate/fragments/" | sed -n '6p' | grep -q "^30-"
+    ls "$DIR/orchestrate/fragments/" | sed -n '6p' | grep -q "^26-"
+    ls "$DIR/orchestrate/fragments/" | sed -n '7p' | grep -q "^27-"
+    ls "$DIR/orchestrate/fragments/" | sed -n '8p' | grep -q "^30-"
 }
 
 @test "install.yaml lists all fragments" {
@@ -72,4 +76,16 @@ setup() {
 
 @test "orchestrate command sets WP_DB_IMPORT default" {
     grep -q "WP_DB_IMPORT" "$DIR/commands/web/orchestrate"
+}
+
+@test "orchestrate command supports ORCHESTRATE_SKIP" {
+    grep -q "ORCHESTRATE_SKIP" "$DIR/commands/web/orchestrate"
+}
+
+@test "orchestrate command supports project fragments directory" {
+    grep -q "PROJECT_FRAGMENTS_DIR" "$DIR/commands/web/orchestrate"
+}
+
+@test "orchestrate command has should_skip function" {
+    grep -q "should_skip" "$DIR/commands/web/orchestrate"
 }
