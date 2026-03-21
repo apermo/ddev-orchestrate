@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.2] - Unreleased
 
+### Added
+
+- Project-level fragments directory (`orchestrate/project/`) for custom orchestration steps
+- `ORCHESTRATE_SKIP` env var to disable specific addon fragments
+
 ### Fixed
 
 - Workflow callers missing permissions (caused startup_failure)
